@@ -32,7 +32,7 @@ Then, there is a zooming functionality :
 
 The blue road is the road that is the closest to the current point (in red). It is therefore the road the algorithm assumes the car is on. The way each roads are computed is by a starting point and an ending point having as x and y coordinates the longitude and latitude.
 
-The second functionality that this algorithm provides is the routing from the current position to a given destination.
+The second functionality that this algorithm provides is the routing from the current position to a given destination. Each road has the form ax + b = y. From that coefficient a, the heading [0, 360[ in degrees is then deducted to guide the car to the next intermediate checkpoint. The full blue circle is the destination. 
 
 ![ScreenShot](Images/router.tiff)
 
