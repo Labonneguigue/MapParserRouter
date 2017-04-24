@@ -3,26 +3,28 @@
 
 #include <string>
 #include <vector>
-
-#include "rapidxml_utils.hpp"
-
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <tuple>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <math.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
+#include "rapidxml_utils.hpp"
+#include "router.hpp"
 
 #define LOCAL_PI 3.1415926535897932385
-#define LARGEUR_FENETRE 900
-#define HAUTEUR_FENETRE 900
+#define LARGEUR_FENETRE 1000
+#define HAUTEUR_FENETRE 700
 #define DISTANCE_BETWEEN_ACQUISITIONS 5
 #define GPS_UNCERTAINTY 2.5
 
 using namespace std;
-
-
-
-
-
-
 
 /********************************/
 /*								*/
@@ -51,6 +53,7 @@ public:
     void Display(int close, cv::Mat imageToWriteOn);
 
     void DisplayAsPathNode(int close, cv::Mat imageToWriteOn);
+    void DisplayAsDestinationNode(int close, cv::Mat imageToWriteOn);
 
     float GetLatitude();
     float GetLongitude();
@@ -81,7 +84,6 @@ private:
     Node end;
     float a;
     float b;
-    int width;
     std::vector<Node> Road_Nodes;
 
     void Compute_Coefs();
@@ -161,17 +163,22 @@ private:
     double DestinationPosition_Lon = 0;
     double DestinationPosition_Lat = 0;
 
-    std::vector<Node *> Node_Vec;
+    std::vector<Node *> * Node_Vec;
     std::vector<Road *> Road_Vec;
     std::vector<Building *> Building_Vec;
     std::vector<Node *> User_Node;
 
-    std::vector<Node *> PathToDestination;
+    std::vector<Node *> * PathToDestination;
+
     int CurrentIntermediateDestinationNode;
     int PathSet = 0;
 
     int IntermediateDestinationReached = 0;
     int FinalDestinationReached = 0;
+
+    int ManualDestinationSet = 0;
+
+    int Front = 0;
 
 public:
     static cv::Mat image;
@@ -194,6 +201,8 @@ public:
 
     Node * GetClosestNode();
 
+    Node * GetClosestNodeToDestination();
+
     //	Display every roads and the one we are on with a different color
     void DisplayAllRoads(std::vector<Road *> v, int close, cv::Mat imageToWriteOn);
 
@@ -204,7 +213,7 @@ public:
 
     void DisplayPath(int close);
 
-    void WhichRoad(double lon, double lat);
+
 
     // Set the alpha factor that convert longitude/latitude in pixels
     static void SetAlpha();
@@ -224,9 +233,13 @@ public:
 
     vector<tuple<string, double>> GetTupleOfDestinations();
 
-    Map(char * OsmFilePath);
+    Map(string OsmFilePath);
+    ~Map();
 
-    double WhichRoadWithLatLon();
+    double WhichRoadWithLatLon(double lon, double lat);
+
+    double WhichRoad();
+    double WhichRoadToDestination();
 
     int CreateAll(int close);
 
@@ -244,7 +257,13 @@ public:
 
     void SetDestination(double idDestNode);
 
+    void SetDestinationManually(double lon, double lat);
+
     void SetPath(std::vector<char *> path);
+
+    float GetFrontAndTurnDistance(float angle);
+
+    int GetFront();
 
 };
 

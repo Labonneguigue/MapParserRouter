@@ -1,0 +1,195 @@
+PROG	/Users/guiwake/Documents/Programmation/MapParserRouter/makefile	/^PROG = parserAndRouter$/;"	macro	line:4
+CC	/Users/guiwake/Documents/Programmation/MapParserRouter/makefile	/^CC = g++$/;"	macro	line:5
+CPPFLAGS	/Users/guiwake/Documents/Programmation/MapParserRouter/makefile	/^CPPFLAGS = -g -I \/usr\/local\/include -Wall -I\/usr\/include\/python2.7 -std=c++11$/;"	macro	line:7
+LIBS	/Users/guiwake/Documents/Programmation/MapParserRouter/makefile	/^LIBS = -lpython2.7$/;"	macro	line:8
+LDFLAGS	/Users/guiwake/Documents/Programmation/MapParserRouter/makefile	/^LDFLAGS = -L\/usr\/local\/lib  -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect -L\/usr\/lib\/python2.7\/config\/ -L\/Library\/Frameworks\/Python.framework\/Versions\/3.3\/lib\/$/;"	macro	line:9
+OBJS	/Users/guiwake/Documents/Programmation/MapParserRouter/makefile	/^OBJS = parserV1.o caller.o router.o$/;"	macro	line:10
+ROUTER_H	/Users/guiwake/Documents/Programmation/MapParserRouter/router.hpp	/^#define ROUTER_H$/;"	macro	line:2
+PY_router	/Users/guiwake/Documents/Programmation/MapParserRouter/router.hpp	/^#define PY_router /;"	macro	line:4
+Router	/Users/guiwake/Documents/Programmation/MapParserRouter/router.hpp	/^class Router{$/;"	class	line:14
+PARSERV1_H	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^#define PARSERV1_H$/;"	macro	line:2
+LOCAL_PI	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^#define LOCAL_PI /;"	macro	line:21
+LARGEUR_FENETRE	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^#define LARGEUR_FENETRE /;"	macro	line:22
+HAUTEUR_FENETRE	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^#define HAUTEUR_FENETRE /;"	macro	line:23
+DISTANCE_BETWEEN_ACQUISITIONS	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^#define DISTANCE_BETWEEN_ACQUISITIONS /;"	macro	line:24
+GPS_UNCERTAINTY	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^#define GPS_UNCERTAINTY /;"	macro	line:25
+Node	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^class Node{$/;"	class	line:35
+Name	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::string Name;$/;"	member	line:38	class:Node
+user	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int user = 0;$/;"	member	line:39	class:Node
+id	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double id;$/;"	member	line:40	class:Node
+latitude	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    float latitude;$/;"	member	line:41	class:Node
+longitude	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    float longitude;$/;"	member	line:42	class:Node
+NotRoutingNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int NotRoutingNode = 0;$/;"	member	line:43	class:Node
+Road	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^class Road{$/;"	class	line:79
+id	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double id;$/;"	member	line:82	class:Road
+begin	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    Node begin;$/;"	member	line:83	class:Road
+end	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    Node end;$/;"	member	line:84	class:Road
+a	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    float a;$/;"	member	line:85	class:Road
+b	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    float b;$/;"	member	line:86	class:Road
+Road_Nodes	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Node> Road_Nodes;$/;"	member	line:87	class:Road
+Building	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^class Building{$/;"	class	line:123
+id	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double id;$/;"	member	line:126	class:Building
+Name	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::string Name;$/;"	member	line:127	class:Building
+Building_Corner_Vec	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Node> Building_Corner_Vec;$/;"	member	line:128	class:Building
+Map	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^class Map {$/;"	class	line:147
+Min_lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Min_lon;$/;"	member	line:150	class:Map
+Max_lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Max_lon;$/;"	member	line:151	class:Map
+Min_lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Min_lat;$/;"	member	line:152	class:Map
+Max_lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Max_lat;$/;"	member	line:153	class:Map
+Delta_Lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Delta_Lon;$/;"	member	line:154	class:Map
+Delta_Lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Delta_Lat;$/;"	member	line:155	class:Map
+BaseIndexToCount	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int BaseIndexToCount = 1000;$/;"	member	line:157	class:Map
+CurrentPosition_Lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double CurrentPosition_Lon = 0;$/;"	member	line:159	class:Map
+CurrentPosition_Lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double CurrentPosition_Lat = 0;$/;"	member	line:160	class:Map
+PreviousPosition_Lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double PreviousPosition_Lon = 0;$/;"	member	line:161	class:Map
+PreviousPosition_Lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double PreviousPosition_Lat = 0;$/;"	member	line:162	class:Map
+DestinationPosition_Lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double DestinationPosition_Lon = 0;$/;"	member	line:163	class:Map
+DestinationPosition_Lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    double DestinationPosition_Lat = 0;$/;"	member	line:164	class:Map
+Node_Vec	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Node *> * Node_Vec;$/;"	member	line:166	class:Map
+Road_Vec	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Road *> Road_Vec;$/;"	member	line:167	class:Map
+Building_Vec	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Building *> Building_Vec;$/;"	member	line:168	class:Map
+User_Node	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Node *> User_Node;$/;"	member	line:169	class:Map
+PathToDestination	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    std::vector<Node *> * PathToDestination;$/;"	member	line:171	class:Map
+CurrentIntermediateDestinationNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int CurrentIntermediateDestinationNode;$/;"	member	line:173	class:Map
+PathSet	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int PathSet = 0;$/;"	member	line:174	class:Map
+IntermediateDestinationReached	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int IntermediateDestinationReached = 0;$/;"	member	line:176	class:Map
+FinalDestinationReached	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int FinalDestinationReached = 0;$/;"	member	line:177	class:Map
+ManualDestinationSet	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int ManualDestinationSet = 0;$/;"	member	line:179	class:Map
+Front	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    int Front = 0;$/;"	member	line:181	class:Map
+image	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static cv::Mat image;$/;"	member	line:184	class:Map
+imageClose	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static cv::Mat imageClose;$/;"	member	line:185	class:Map
+Alpha	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Alpha;$/;"	member	line:186	class:Map
+Beta	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static double Beta;$/;"	member	line:187	class:Map
+CurrentRoad	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.hpp	/^    static int CurrentRoad;$/;"	member	line:188	class:Map
+main	/Users/guiwake/Documents/Programmation/MapParserRouter/caller.cpp	/^int main(){$/;"	function	line:18	signature:()
+getpath	/Users/guiwake/Documents/Programmation/MapParserRouter/router.cpp	/^void Router::getpath(char pointA[] ,char pointB[], std::vector<char*>& path)$/;"	function	line:18	class:Router	signature:(char pointA[] ,char pointB[], std::vector<char*>& path)
+re	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^import re, string, sys$/;"	namespace	line:3
+string	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^import re, string, sys$/;"	namespace	line:3
+sys	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^import re, string, sys$/;"	namespace	line:3
+xml	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^import xml.sax as sax$/;"	namespace	line:4
+sax	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^import xml.sax as sax$/;"	namespace	line:4
+radians	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^from math import radians, cos, sin, asin, sqrt$/;"	namespace	line:5
+cos	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^from math import radians, cos, sin, asin, sqrt$/;"	namespace	line:5
+sin	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^from math import radians, cos, sin, asin, sqrt$/;"	namespace	line:5
+asin	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^from math import radians, cos, sin, asin, sqrt$/;"	namespace	line:5
+sqrt	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^from math import radians, cos, sin, asin, sqrt$/;"	namespace	line:5
+filepath	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^filepath = '.\/heavy.osm'$/;"	variable	line:10
+DictHandler	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^class DictHandler(sax.handler.ContentHandler):$/;"	class	line:15
+__init__	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^    def __init__(self):$/;"	member	line:17	class:DictHandler
+setDb	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^    def setDb(self, db):$/;"	member	line:27	class:DictHandler
+startElement	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^    def startElement(self, name, attrs):$/;"	member	line:31	class:DictHandler
+nowNode	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^		nowNode = self.db.getNode(attrs["ref"])$/;"	variable	line:60	class:DictHandler
+endElement	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^    def endElement(self, name):$/;"	member	line:80	class:DictHandler
+way	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^class way():$/;"	class	line:99
+__init__	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def __init__(self,id):$/;"	member	line:100	class:way
+connection	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^class connection():$/;"	class	line:104
+__init__	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def __init__(self,wayId,node1,node2):$/;"	member	line:105	class:connection
+printConnection	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def printConnection(self):$/;"	member	line:112	class:connection
+getOtherNode	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def getOtherNode(self,node):$/;"	member	line:116	class:connection
+node	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^class node():$/;"	class	line:122
+__init__	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def __init__(self,id,lat,lon):$/;"	member	line:123	class:node
+addConnection	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def addConnection(self,connection):$/;"	member	line:136	class:node
+saveConnections	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def saveConnections(self):$/;"	member	line:138	class:node
+discardChanges	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^    	def discardChanges(self):$/;"	function	line:143	function:node.saveConnections
+numOfConnections	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def numOfConnections(self):$/;"	member	line:146	class:node
+printConnections	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def printConnections(self):$/;"	member	line:149	class:node
+getScore	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def getScore(self):$/;"	member	line:156	class:node
+printNextNodes	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def printNextNodes(self):$/;"	member	line:162	class:node
+raiseKnowledge	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def raiseKnowledge(self,prefNode,destNode):$/;"	member	line:167	class:node
+routingDb	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^class routingDb():$/;"	class	line:178
+__init__	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def __init__(self):$/;"	member	line:179	class:routingDb
+addNode	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def addNode(self,nodeId,node):$/;"	member	line:183	class:routingDb
+size	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def size(self):$/;"	member	line:187	class:routingDb
+getNode	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def getNode(self,nodeId):$/;"	member	line:191	class:routingDb
+cleanUp	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def cleanUp(self):$/;"	member	line:194	class:routingDb
+printStatus	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^	def printStatus(self):$/;"	member	line:207	class:routingDb
+readDb	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def readDb(dateiname,db):$/;"	function	line:215
+findNextNodes	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def findNextNodes(node):$/;"	function	line:225
+calcDistance	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def calcDistance(node,otherNode):$/;"	function	line:238
+findTopNode	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def findTopNode(knownNodes):$/;"	function	line:262
+startRouting	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def startRouting(db,startID,endID):$/;"	function	line:271
+cpp_call_test	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def cpp_call_test():$/;"	function	line:331
+cpp_call	/Users/guiwake/Documents/Programmation/MapParserRouter/routing.py	/^def cpp_call(pointAB):$/;"	function	line:334
+Min_lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Min_lon = 50;$/;"	member	line:25	class:Map	file:
+Max_lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Max_lon = 0;$/;"	member	line:26	class:Map	file:
+Min_lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Min_lat = 50;$/;"	member	line:27	class:Map	file:
+Max_lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Max_lat = 0;$/;"	member	line:28	class:Map	file:
+Alpha	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Alpha = 0;$/;"	member	line:29	class:Map	file:
+Beta	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Beta = 0;$/;"	member	line:30	class:Map	file:
+Delta_Lon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Delta_Lon = 0;$/;"	member	line:31	class:Map	file:
+Delta_Lat	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::Delta_Lat = 0;$/;"	member	line:32	class:Map	file:
+CurrentRoad	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::CurrentRoad = 0;$/;"	member	line:33	class:Map	file:
+image	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^cv::Mat Map::image;$/;"	member	line:34	class:Map	file:
+imageClose	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^cv::Mat Map::imageClose;$/;"	member	line:35	class:Map	file:
+BuildAllRoads	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::BuildAllRoads(int id_road, vector<Node> VEC){$/;"	function	line:45	class:Map	signature:(int id_road, vector<Node> VEC)
+ComputeCoefA	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Map::ComputeCoefA(Node begin, Node end){$/;"	function	line:83	class:Map	signature:(Node begin, Node end)
+CreateAll	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::CreateAll(int close){$/;"	function	line:88	class:Map	signature:(int close)
+GetCorrectiveHeading	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Map::GetCorrectiveHeading(float DrivenDistance){$/;"	function	line:108	class:Map	signature:(float DrivenDistance)
+Display	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::Display(int close){$/;"	function	line:192	class:Map	signature:(int close)
+DisplayImage	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::DisplayImage(int close){$/;"	function	line:212	class:Map	signature:(int close)
+DisplayMyPosition	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::DisplayMyPosition(int close){$/;"	function	line:224	class:Map	signature:(int close)
+DirectDistance	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::DirectDistance(double lat1, double lng1, double lat2, double lng2)$/;"	function	line:234	class:Map	signature:(double lat1, double lng1, double lat2, double lng2)
+DisplayAllBuildings	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::DisplayAllBuildings(vector<Building *> v, int close, cv::Mat imageToWriteOn){$/;"	function	line:248	class:Map	signature:(vector<Building *> v, int close, cv::Mat imageToWriteOn)
+DisplayAllUserNodes	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::DisplayAllUserNodes(vector<Node *> v, int close, cv::Mat imageToWriteOn){$/;"	function	line:256	class:Map	signature:(vector<Node *> v, int close, cv::Mat imageToWriteOn)
+DisplayAllRoads	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::DisplayAllRoads(vector<Road *> v, int close, cv::Mat imageToWriteOn){$/;"	function	line:263	class:Map	signature:(vector<Road *> v, int close, cv::Mat imageToWriteOn)
+DisplayPath	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::DisplayPath(int close){$/;"	function	line:273	class:Map	signature:(int close)
+GetFront	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::GetFront(){$/;"	function	line:296	class:Map	signature:()
+GetCloseDisplayX	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::GetCloseDisplayX(double lon){$/;"	function	line:301	class:Map	signature:(double lon)
+GetCloseDisplayY	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::GetCloseDisplayY(double lat){$/;"	function	line:307	class:Map	signature:(double lat)
+GetDisplayX	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::GetDisplayX(double lon){$/;"	function	line:313	class:Map	signature:(double lon)
+GetDisplayY	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::GetDisplayY(double lat){$/;"	function	line:319	class:Map	signature:(double lat)
+GetClosestNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node * Map::GetClosestNode(){$/;"	function	line:325	class:Map	signature:()
+GetClosestNodeToDestination	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node * Map::GetClosestNodeToDestination(){$/;"	function	line:350	class:Map	signature:()
+GetUserNodeById	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node * Map::GetUserNodeById(double id){$/;"	function	line:375	class:Map	signature:(double id)
+GetNodeById	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node * Map::GetNodeById(double id){$/;"	function	line:386	class:Map	signature:(double id)
+GetRoadById	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Road * Map::GetRoadById(double id){$/;"	function	line:397	class:Map	signature:(double id)
+GetTupleOfDestinations	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^vector<tuple<string, double>> Map::GetTupleOfDestinations(){$/;"	function	line:410	class:Map	signature:()
+SetAlpha	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::SetAlpha(){$/;"	function	line:419	class:Map	signature:()
+SetBeta	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::SetBeta(){$/;"	function	line:434	class:Map	signature:()
+SetPath	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::SetPath(vector<char *> path){$/;"	function	line:439	class:Map	signature:(vector<char *> path)
+SetPosition	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Map::SetPosition(double lon, double lat){$/;"	function	line:472	class:Map	signature:(double lon, double lat)
+SetDestinationManually	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::SetDestinationManually(double lon, double lat){$/;"	function	line:487	class:Map	signature:(double lon, double lat)
+SetDestination	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Map::SetDestination(double idDestNode){$/;"	function	line:512	class:Map	signature:(double idDestNode)
+ToRadians	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::ToRadians(double degrees)$/;"	function	line:538	class:Map	signature:(double degrees)
+WhichRoadWithLatLon	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::WhichRoadWithLatLon(double lon, double lat){$/;"	function	line:546	class:Map	signature:(double lon, double lat)
+WhichRoad	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::WhichRoad(){$/;"	function	line:561	class:Map	signature:()
+WhichRoadToDestination	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Map::WhichRoadToDestination(){$/;"	function	line:567	class:Map	signature:()
+GetFrontAndTurnDistance	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Map::GetFrontAndTurnDistance(float angle){$/;"	function	line:574	class:Map	signature:(float angle)
+Map	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Map::Map(string OsmFilePath){$/;"	function	line:606	class:Map	signature:(string OsmFilePath)
+~Map	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Map::~Map(){$/;"	function	line:782	class:Map	signature:()
+ToString	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Node::ToString(){$/;"	function	line:794	class:Node	signature:()
+Node	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node::Node(){$/;"	function	line:803	class:Node	signature:()
+Node	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node::Node(double Node_Id, float lon, float lat){$/;"	function	line:808	class:Node	signature:(double Node_Id, float lon, float lat)
+operator <	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^bool Node::operator< (const Node &other) {$/;"	function	line:815	class:Node	signature:(const Node &other)
+SetName	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Node::SetName(string NAME){$/;"	function	line:820	class:Node	signature:(string NAME)
+Display	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Node::Display(int close, cv::Mat imageToWriteOn){$/;"	function	line:825	class:Node	signature:(int close, cv::Mat imageToWriteOn)
+DisplayAsPathNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Node::DisplayAsPathNode(int close, cv::Mat imageToWriteOn){$/;"	function	line:839	class:Node	signature:(int close, cv::Mat imageToWriteOn)
+DisplayAsDestinationNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Node::DisplayAsDestinationNode(int close, cv::Mat imageToWriteOn){$/;"	function	line:847	class:Node	signature:(int close, cv::Mat imageToWriteOn)
+GetLatitude	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Node::GetLatitude(){$/;"	function	line:855	class:Node	signature:()
+GetLongitude	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Node::GetLongitude(){$/;"	function	line:858	class:Node	signature:()
+GetId	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Node::GetId(){$/;"	function	line:861	class:Node	signature:()
+NotARoutingNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Node::NotARoutingNode(){$/;"	function	line:865	class:Node	signature:()
+IsNotRoutingNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^int Node::IsNotRoutingNode(){$/;"	function	line:869	class:Node	signature:()
+GetName	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^string Node::GetName(){$/;"	function	line:873	class:Node	signature:()
+Compute_Coefs	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Road::Compute_Coefs(){$/;"	function	line:883	class:Road	signature:()
+ToString	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Road::ToString(){$/;"	function	line:888	class:Road	signature:()
+Road	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Road::Road(double Road_Id, vector<Node> VEC){$/;"	function	line:893	class:Road	signature:(double Road_Id, vector<Node> VEC)
+Road	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Road::Road(double Road_Id, Node b, Node e){$/;"	function	line:899	class:Road	signature:(double Road_Id, Node b, Node e)
+SetEndNode	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Road::SetEndNode(Node e){$/;"	function	line:906	class:Road	signature:(Node e)
+SetVecRoadNodes	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Road::SetVecRoadNodes(std::vector<Node> VEC){$/;"	function	line:911	class:Road	signature:(std::vector<Node> VEC)
+DistanceToCenter	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Road::DistanceToCenter(double lon, double lat){$/;"	function	line:915	class:Road	signature:(double lon, double lat)
+Display	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Road::Display(int close, cv::Mat imageToWriteOn){$/;"	function	line:935	class:Road	signature:(int close, cv::Mat imageToWriteOn)
+GetRoadNodes	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^vector<Node> Road::GetRoadNodes(){$/;"	function	line:960	class:Road	signature:()
+GetA	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Road::GetA(){$/;"	function	line:964	class:Road	signature:()
+GetB	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^float Road::GetB(){$/;"	function	line:967	class:Road	signature:()
+GetId	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Road::GetId(){$/;"	function	line:970	class:Road	signature:()
+GetBegin	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node Road::GetBegin(){$/;"	function	line:973	class:Road	signature:()
+GetEnd	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Node Road::GetEnd(){$/;"	function	line:976	class:Road	signature:()
+Building	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^Building::Building(int ID, string NAME, vector<Node> VEC){$/;"	function	line:987	class:Building	signature:(int ID, string NAME, vector<Node> VEC)
+Display	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^void Building::Display(int close, cv::Mat imageToWriteOn){$/;"	function	line:994	class:Building	signature:(int close, cv::Mat imageToWriteOn)
+GetName	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^string Building::GetName(){$/;"	function	line:1028	class:Building	signature:()
+GetId	/Users/guiwake/Documents/Programmation/MapParserRouter/parserV1.cpp	/^double Building::GetId(){$/;"	function	line:1032	class:Building	signature:()
+Parser and Router	/Users/guiwake/Documents/Programmation/MapParserRouter/README.md	/^# Parser and Router$/;"	function	line:1
+Installing	/Users/guiwake/Documents/Programmation/MapParserRouter/README.md	/^## Installing$/;"	function	line:6
+Compiling	/Users/guiwake/Documents/Programmation/MapParserRouter/README.md	/^## Compiling$/;"	function	line:10
+What does the code do	/Users/guiwake/Documents/Programmation/MapParserRouter/README.md	/^## What does the code do$/;"	function	line:18

@@ -14,7 +14,7 @@
 class Router{
 
 public:
-    std::vector<char*> getpath(char pointA[],char pointB[]);
+    void getpath(char pointA[],char pointB[], std::vector<char*>& path);
 };
 
 

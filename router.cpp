@@ -15,39 +15,20 @@
 
 using namespace std;
 
-//int main()
-/*
-int main(int argc,char *argv[])
-{
-    std::vector<char*> ipath;
-    char pointA[7] = "-1630";
-    char pointB[7] = "-1633";
-
-    printf("%s.....%s\n",pointA,pointB);
-    ipath = getpath(pointA,pointB);
-    int len = (int)ipath.size();
-    printf("ipath lentfh :%d",len);
-    return 0;
-}
-*/
-vector<char*> Router::getpath(char pointA[] ,char pointB[])
-//int main(int argc,char *argv[])
+void Router::getpath(char pointA[] ,char pointB[], std::vector<char*>& path)
 {
     PyObject *pName, *pModule, *pDict, *pFunc,  *pPath, *pListItem;
     PyObject *arglist;
     char *pycpp_path_result;
-    std::vector<char*> path;
+    //std::vector<char*> path;
     std::vector<char*>::iterator itpath;
 
     int element_num,k;
     printf("%s...getpath..%s\n",pointA,pointB);
     arglist = Py_BuildValue("ss",pointA,pointB);
 
-    // init variables for extract elements from list.
-    // Initialize the Python interpreter
-    // TODO system call export PYTHONPATH=$PWD
-    system("echo -------------lajsldklajsdjlsajdlkjsaljlkdlksaljdlkjsa");
-    system("echo export PYTHONPATH=$PWD");
+    //system("echo -------------lajsldklajsdjlsajdlkjsaljlkdlksaljdlkjsa");
+    //system("echo export PYTHONPATH=$PWD");
     Py_Initialize();
     if(!Py_IsInitialized())
     {
@@ -66,7 +47,7 @@ vector<char*> Router::getpath(char pointA[] ,char pointB[])
     {
         PyErr_Print();
         std::cout << "can't find : " << PY_router << ".py\n";
-        return path;
+        //return path;
     }
 
     // pDict is a borrowed reference
@@ -74,7 +55,7 @@ vector<char*> Router::getpath(char pointA[] ,char pointB[])
     if(!pDict)
     {
         printf("Pymodule_getDict() fail\n");
-        return path;
+        //return path;
     }
 
     // Build the name of a callable class
@@ -95,7 +76,10 @@ vector<char*> Router::getpath(char pointA[] ,char pointB[])
     for(itpath=path.begin();itpath<path.end();itpath++)
         std::cout<<' '<<*itpath;
     std::cout<<'\n';
-        //printf("IN CPP we got : %d elements from PYTHON\n",element_num);
     Py_Finalize();
-    return path;
+    for (int i = 0 ; i < path.size() ; i++){
+        cout << path[i];
+    }
+    cout << "\n" << path.size() << "\n";
+    //return path;
 }

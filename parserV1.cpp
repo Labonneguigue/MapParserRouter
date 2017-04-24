@@ -1,9 +1,5 @@
-//
-//  parserV1.cpp
-//  OpenCVParser
-//
-//  Created by Guillaume GRANIE on 06/12/2016.
-//
+#include <string>
+#include <vector>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -11,17 +7,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "rapidxml_utils.hpp"
 #include <math.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+
+// RapidXML is the library we used to parse the map. (xml document)
+#include "rapidxml_utils.hpp"
+
 #include "router.hpp"
 #include "parserV1.hpp"
 
 using namespace rapidxml;
-//using namespace cv;
 using namespace std;
 
 double Map::Min_lon = 50;
@@ -36,6 +34,14 @@ int Map::CurrentRoad = 0;
 cv::Mat Map::image;
 cv::Mat Map::imageClose;
 
+/**
+Decompose a Road in different smaller roads
+for display purposes.
+
+@param id of the initial road
+@param vector of nodes that represent 1 road
+@return
+*/
 void Map::BuildAllRoads(int id_road, vector<Node> VEC){
 	//Create the first road
 	int indexFirst = 0;
@@ -73,10 +79,12 @@ void Map::BuildAllRoads(int id_road, vector<Node> VEC){
 	Road_Vec.push_back(myRoad);
 }
 
+// Returns the coefficient of a straight line out of 2 points.
 float Map::ComputeCoefA(Node begin, Node end){
 	return (end.GetLatitude() - begin.GetLatitude())/(end.GetLongitude() - begin.GetLongitude());
 }
 
+//	Display everything updated on the OpenCV Mat images.
 int Map::CreateAll(int close){
 	if (close){
 		DisplayAllRoads(Road_Vec, close, imageClose);
@@ -90,6 +98,13 @@ int Map::CreateAll(int close){
 	return 1;
 }
 
+/*
+Model of our car.
+Computes the corrective angle to follow in order to keep
+a correct heading
+
+@param Distance driven between the Current Position and the Previous position
+*/
 float Map::GetCorrectiveHeading(float DrivenDistance){
 	// Need to have called SetPosition() right before and 5 meters before
 	// Our CurrentPosition_Lon and CurrentPosition_Lat are the GPS position.
@@ -99,7 +114,6 @@ float Map::GetCorrectiveHeading(float DrivenDistance){
 
 	if (PathSet){
 		double distance = DirectDistance(CurrentPosition_Lat, CurrentPosition_Lon, PreviousPosition_Lat, PreviousPosition_Lon);
-		std::cout << "Distance brute avant correction de position: " << distance << '\n';
 
 		// We assume an uncertainty of 2.5 meters on the GPS measure.
 		float Cap_Actuel = 0;
@@ -113,15 +127,18 @@ float Map::GetCorrectiveHeading(float DrivenDistance){
 
 		CurrentPosition_Lon = PreviousPosition_Lon + rapport * (CurrentPosition_Lon - PreviousPosition_Lon);
 		CurrentPosition_Lat = PreviousPosition_Lat + rapport * (CurrentPosition_Lat - PreviousPosition_Lat);
-
-		std::cout << "Distance normalement égale à 5 après Correction de position: " << DirectDistance(CurrentPosition_Lon, CurrentPosition_Lat, PreviousPosition_Lon, PreviousPosition_Lat) << '\n';
-		if (PathToDestination.size() != 0){
-			double Local_DestinationPosition_Lon;
-			double Local_DestinationPosition_Lat;
-			if (CurrentIntermediateDestinationNode != -1){
-				Local_DestinationPosition_Lon = PathToDestination[CurrentIntermediateDestinationNode]->GetLongitude();
-				Local_DestinationPosition_Lat = PathToDestination[CurrentIntermediateDestinationNode]->GetLatitude();
-			} else {
+		double Local_DestinationPosition_Lat;
+		double Local_DestinationPosition_Lon;
+		if (PathToDestination->size() != 0 || ManualDestinationSet == 1){
+			if (ManualDestinationSet == 0){
+				if (CurrentIntermediateDestinationNode != -1){
+					Local_DestinationPosition_Lon = PathToDestination->at(CurrentIntermediateDestinationNode)->GetLongitude();
+					Local_DestinationPosition_Lat = PathToDestination->at(CurrentIntermediateDestinationNode)->GetLatitude();
+				} else {
+					Local_DestinationPosition_Lon = DestinationPosition_Lon;
+					Local_DestinationPosition_Lat = DestinationPosition_Lat;
+				}
+			} else if (ManualDestinationSet == 1){
 				Local_DestinationPosition_Lon = DestinationPosition_Lon;
 				Local_DestinationPosition_Lat = DestinationPosition_Lat;
 			}
@@ -132,10 +149,10 @@ float Map::GetCorrectiveHeading(float DrivenDistance){
 				//	Test if we were heading to the final destination
 				if (CurrentIntermediateDestinationNode == -1){
 					std::cout << "\n\n\t ARRIVED !\n\n";
-					PathToDestination.clear();
+					PathToDestination->clear();
 				}
 				// Test if we were heading to the last intermediate Node before final destination
-				if (CurrentIntermediateDestinationNode == PathToDestination.size() - 1){
+				if (CurrentIntermediateDestinationNode == PathToDestination->size() - 1){
 					// If so, we are now heading to the final destination ( user defined point)
 					Local_DestinationPosition_Lon = DestinationPosition_Lon;
 					Local_DestinationPosition_Lat = DestinationPosition_Lat;
@@ -144,11 +161,11 @@ float Map::GetCorrectiveHeading(float DrivenDistance){
 				} else {
 					// else, we are now heading to the next intermediate node
 					CurrentIntermediateDestinationNode++;
-					if (CurrentIntermediateDestinationNode >= PathToDestination.size()){
-						std::cout << "PROBLEME" << '\n';
+					if (CurrentIntermediateDestinationNode >= PathToDestination->size()){
+						std::cout << "PROBLEM" << '\n';
 					} else {
-						Local_DestinationPosition_Lon = PathToDestination[CurrentIntermediateDestinationNode]->GetLongitude();
-						Local_DestinationPosition_Lat = PathToDestination[CurrentIntermediateDestinationNode]->GetLatitude();
+						Local_DestinationPosition_Lon = PathToDestination->at(CurrentIntermediateDestinationNode)->GetLongitude();
+						Local_DestinationPosition_Lat = PathToDestination->at(CurrentIntermediateDestinationNode)->GetLatitude();
 					}
 					RemainingDistance = DirectDistance(CurrentPosition_Lon, CurrentPosition_Lat, Local_DestinationPosition_Lon, Local_DestinationPosition_Lat);
 				}
@@ -159,10 +176,10 @@ float Map::GetCorrectiveHeading(float DrivenDistance){
 			Cap_Destination = atan(Cap_Destination) * 180 / LOCAL_PI;
 
 			float Cap_Derive = (Cap_Destination - Cap_Actuel);
-			float OppositeAngle = asin(sin(Cap_Derive)*5/RemainingDistance);
+			float OppositeAngle = asin(sin(Cap_Derive) * DrivenDistance / RemainingDistance);
 			Corrective_Cap = OppositeAngle + Cap_Derive;
 		} else {
-			std::cout << "Can't compute corrective cap since size of PathToDestination vector is 0" << '\n';
+			std::cout << "Can't compute corrective cap since size of PathToDestination vector is 0 and no destination has been set manually." << '\n';
 		}
 	} else {
 		//Path not set
@@ -171,6 +188,7 @@ float Map::GetCorrectiveHeading(float DrivenDistance){
 	return Corrective_Cap;
 }
 
+// Highest level function to display everything (Roads, Buildings, Locations, Path to destination).
 void Map::Display(int close){
 	switch (close){
 		case 0:
@@ -190,7 +208,7 @@ void Map::Display(int close){
 	//imshow("Image",imageLocale);
 }
 
-// Position
+// Display effectively the Mat image with the OpenCV library.
 int Map::DisplayImage(int close){
 	if (close){
 		cv::imshow("Image",imageClose);
@@ -202,6 +220,7 @@ int Map::DisplayImage(int close){
 	return 1;
 }
 
+// Draw our position on the specified OpenCV image.
 int Map::DisplayMyPosition(int close){
 	if (close){
 		cv::circle(imageClose, cv::Point(GetCloseDisplayX(CurrentPosition_Lon), GetCloseDisplayY(CurrentPosition_Lat)),  5, cv::Scalar(0, 0, 255, 255), -1, 8, 0);
@@ -210,15 +229,8 @@ int Map::DisplayMyPosition(int close){
 	}
 	return 1;
 }
-/*
-int Map::DisplayCloseToLocation(cv::Mat imageToWriteOn){
-//Position in the center of the screen
-SetBeta();
-CreateAll(1, imageToWriteOn);
-return 1;
-}
-*/
-// Distance between two points (longitude, latitude)
+
+// Returns Distance in meters between two points (longitude, latitude)
 double Map::DirectDistance(double lat1, double lng1, double lat2, double lng2)
 {
 	double earthRadius = 6371000; //meters
@@ -232,20 +244,22 @@ double Map::DirectDistance(double lat1, double lng1, double lat2, double lng2)
 	return dist;
 }
 
-//Draw the buildings on the image (or imageClose)
+//Draw the buildings on the specified OpenCV image
 void Map::DisplayAllBuildings(vector<Building *> v, int close, cv::Mat imageToWriteOn){
 	for(vector<Building *>::iterator it = v.begin(); it != v.end(); ++it) {
 		(*it)->Display(close, imageToWriteOn);
 	}
+	cout << "buildings displayed : " << v.size() << '\n';
 }
 
+//	Draw the possible destinations on the specified OpenCV image
 void Map::DisplayAllUserNodes(vector<Node *> v, int close, cv::Mat imageToWriteOn){
 	for(vector<Node *>::iterator it = v.begin(); it != v.end(); ++it) {
 		(*it)->Display(close, imageToWriteOn);
 	}
 }
 
-//	Display every roads and the one we are on with a different color
+//	Draw every roads and the one we are on with a different color on the specified OpenCV image.
 void Map::DisplayAllRoads(vector<Road *> v, int close, cv::Mat imageToWriteOn){
 	int i = 0;
 	for(vector<Road *>::iterator it = v.begin(); it != v.end(); ++it) {
@@ -255,51 +269,64 @@ void Map::DisplayAllRoads(vector<Road *> v, int close, cv::Mat imageToWriteOn){
 	cout << "roads displayed : " << i << '\n';
 }
 
+//	Draw every intermediate Nodes from our position to the destination on the specified OpenCV image
 void Map::DisplayPath(int close){
 	if (close){
-		if (PathToDestination.size() != 0){
-			for (int i=0 ; i<PathToDestination.size() ; i++){
-				GetNodeById(PathToDestination[i]->GetId())->DisplayAsPathNode(close, imageClose);
+		if (PathToDestination->size() != 0){
+			for (int i=0 ; i<PathToDestination->size() ; i++){
+				GetNodeById(PathToDestination->at(i)->GetId())->DisplayAsPathNode(close, imageClose);
 			}
+			GetClosestNodeToDestination()->DisplayAsDestinationNode(close, imageClose);
 		} else {
 			std::cout << "Can't display a path without nodes" << '\n';
 		}
 	} else {
-		if (PathToDestination.size() != 0){
-			for (int i=0 ; i<PathToDestination.size() ; i++){
-				GetNodeById(PathToDestination[i]->GetId())->DisplayAsPathNode(close, image);
+		if (PathToDestination->size() != 0){
+			for (int i=0 ; i<PathToDestination->size() ; i++){
+				GetNodeById(PathToDestination->at(i)->GetId())->DisplayAsPathNode(close, image);
 			}
+			GetClosestNodeToDestination()->DisplayAsDestinationNode(close, image);
 		} else {
 			std::cout << "Can't display a path without nodes" << '\n';
 		}
 	}
 }
 
+// 	@Getter : Steering Wheel position to be set to turn properly.
+int Map::GetFront(){
+	return Front;
+}
+
+//	Display set up calculation to change coordinates from longitude to x in pixels on the close display.
 int Map::GetCloseDisplayX(double lon){
 	double temp = ((lon - Min_lon)*Beta) - Delta_Lon;
 	return temp;
 }
 
+//	Display set up calculation to change coordinates from latitude to y in pixels on the close display.
 int Map::GetCloseDisplayY(double lat){
 	double temp = ((Max_lat - lat)*Beta) - Delta_Lat;
 	return temp;
 }
 
+//	Display set up calculation to change coordinates from longitude to x in pixels on the normal display.
 int Map::GetDisplayX(double lon){
 	double temp = ((lon - Min_lon)*Alpha) + 10;
 	return temp;
 }
 
+//	Display set up calculation to change coordinates from latitude to y in pixels on the normal display.
 int Map::GetDisplayY(double lat){
 	double temp = ((Max_lat - lat)*Alpha) + 10;
 	return temp;
 }
 
+// @Getter : Node(lat, long) closest to our current position.
 Node * Map::GetClosestNode(){
 	Node * CurrentClosestNodeLocal = NULL;
 	double Distance_Min = 5000;
 	std::cout << "A" << '\n';
-	Road * CurrentRoad = GetRoadById(WhichRoadWithLatLon());
+	Road * CurrentRoad = GetRoadById(WhichRoad());
 	if (CurrentRoad != NULL){
 		vector<Node> MyRoadNodes = CurrentRoad->GetRoadNodes();
 		std::cout << "size " << MyRoadNodes.size() << '\n';
@@ -307,6 +334,31 @@ Node * Map::GetClosestNode(){
 			for(vector<Node>::iterator it = MyRoadNodes.begin(); it != MyRoadNodes.end(); ++it) {
 				std::cout << "B" << '\n';
 				double distanceLocal = DirectDistance((*it).GetLatitude(), (*it).GetLongitude(), CurrentPosition_Lat, CurrentPosition_Lon);
+				if(distanceLocal < Distance_Min){
+					Distance_Min = distanceLocal;
+					CurrentClosestNodeLocal = &(*it);
+				}
+			}
+		}
+	} else {
+		std::cout << "No current road" << '\n';
+	}
+	return CurrentClosestNodeLocal;
+}
+
+// @Getter : Node(lat, long) closest to the disired destination.
+Node * Map::GetClosestNodeToDestination(){
+	Node * CurrentClosestNodeLocal = NULL;
+	double Distance_Min = 5000;
+	std::cout << "A" << '\n';
+	Road * CurrentRoad = GetRoadById(WhichRoadToDestination());
+	if (CurrentRoad != NULL){
+		vector<Node> MyRoadNodes = CurrentRoad->GetRoadNodes();
+		std::cout << "size " << MyRoadNodes.size() << '\n';
+		if (MyRoadNodes.size() != 0){
+			for(vector<Node>::iterator it = MyRoadNodes.begin(); it != MyRoadNodes.end(); ++it) {
+				std::cout << "B" << '\n';
+				double distanceLocal = DirectDistance((*it).GetLatitude(), (*it).GetLongitude(), DestinationPosition_Lat, DestinationPosition_Lon);
 				if(distanceLocal < Distance_Min){
 					Distance_Min = distanceLocal;
 					CurrentClosestNodeLocal = &(*it);
@@ -329,10 +381,11 @@ Node * Map::GetUserNodeById(double id){
 	}
 	return null;
 }
+
 // Returns the Node with the specified ID
 Node * Map::GetNodeById(double id){
 	Node * null = NULL;
-	for(vector<Node *>::iterator it = Node_Vec.begin(); it != Node_Vec.end(); ++it) {
+	for(vector<Node *>::iterator it = Node_Vec->begin(); it != Node_Vec->end(); ++it) {
 		if((*it)->GetId() == id){
 			return *it;
 		}
@@ -340,17 +393,20 @@ Node * Map::GetNodeById(double id){
 	return null;
 }
 
+// 	@Getter : Returns a Node specified by its ID.
 Road * Map::GetRoadById(double id){
-	std::cout << "id road " << id << '\n';
 	Road * null = NULL;
 	for(vector<Road *>::iterator it = Road_Vec.begin(); it != Road_Vec.end(); ++it) {
 		if((*it)->GetId() == id){
 			return *it;
 		}
 	}
+	cout << "problem, id not found" << flush;
 	return null;
 }
 
+//	@Getter : Returns a vector of tuples made out of the Name of the destination and its according Node Id.
+// 	TODO: Display this tuple to the user to give him the possibility to choose in which order he wants to visit them.
 vector<tuple<string, double>> Map::GetTupleOfDestinations(){
 	vector<tuple<string, double>> MyTupleOfDestinations;
 	for (int i=0 ; i<User_Node.size() ; i++){
@@ -371,24 +427,48 @@ void Map::SetAlpha(){
 	cout << "Alpha = " << Alpha << '\n';
 }
 
+/*	Set the beta factor that convert longitude/latitude in pixels for the close display.
+TODO: the attribute given to the Display() function should be this coefficient to leave the
+user the possibility to choose its zoom.
+*/
 void Map::SetBeta(){
-	Beta = 4 * Alpha;
+	Beta = 5 * Alpha;
 }
 
+//	@Setter :	Once the path is calculated by the routing algorithm, it should be given to the map for guidance.
 void Map::SetPath(vector<char *> path){
+	Node * TempNode;
 	for (int i=0 ; i<path.size() ; i++){
-		Node * TempNode = GetNodeById(atof(path[i]));
+		if (*(path[i]) ==  '-'){
+			cout << path[i] << "\n" << std::flush;
+			cout << strtod(path[i]+1, NULL) << "\n" << std::flush;
+			double id = (-1)*strtod(path[i]+1, NULL);
+			cout << id << "\n" << std::flush;
+			TempNode = GetNodeById(id);
+			cout << "after";
+		} else {
+			double id = strtod(path[i], NULL);
+			TempNode = GetNodeById(id);
+		}
+		if (TempNode != NULL){
 		if (TempNode->IsNotRoutingNode() == 0){
-			PathToDestination.push_back(TempNode);
+			PathToDestination->push_back(TempNode);
 			std::cout << TempNode->GetId() << '\n';
 		} else {
 			std::cout << "OKKK" << '\n';
 		}
+		cout << i << "\n" << std::flush;
+	} else {
+		cout << "Node not found" ;
+	}
+
 	}
 	CurrentIntermediateDestinationNode = 0;
 	PathSet = 1;
+	cout << "SetPath() done.\n";
 }
 
+//	@Setter : 	Set the last available longitude and latitude of the car.
 int Map::SetPosition(double lon, double lat){
 	PreviousPosition_Lat = CurrentPosition_Lat;
 	PreviousPosition_Lon = CurrentPosition_Lon;
@@ -399,59 +479,71 @@ int Map::SetPosition(double lon, double lat){
 	Delta_Lon = 0;
 	Delta_Lat = GetCloseDisplayY(CurrentPosition_Lat) - (HAUTEUR_FENETRE/2);
 	Delta_Lon = GetCloseDisplayX(CurrentPosition_Lon) - (LARGEUR_FENETRE/2);
-
-	WhichRoad(CurrentPosition_Lon, CurrentPosition_Lat);
-
+	WhichRoad();
 	return 1;
 }
 
-void Map::SetDestination(double idDestNode){
-	//DestinationPosition_Lon = lon;
-	//DestinationPosition_Lat = lat;
-	//It calculates the path to the Destination
-	DestinationPosition_Lon = GetUserNodeById(idDestNode)->GetLongitude();
-	std::cout << "hop" << '\n';
-	DestinationPosition_Lat = GetUserNodeById(idDestNode)->GetLatitude();
-	std::cout << "hop" << '\n';
+//	Setter : Destination for debugging purposes.
+void Map::SetDestinationManually(double lon, double lat){
+	ManualDestinationSet = 1;
+	PathSet = 1;
+	DestinationPosition_Lon = lon;
+	DestinationPosition_Lat = lat;
 	double CurrentClosestNode = GetClosestNode()->GetId();
-	std::cout << "hop" << '\n';
+	double CurrentClosestNodeToDestination = GetClosestNodeToDestination()->GetId();
+	Router MyRouter;
+	std::vector<char*> ipath;
+	char * pointA = new char[12];
+	sprintf (pointA, "%.0f", CurrentClosestNode);
+	std::cout << "Current closest node : " << pointA << '\n';
+	char * pointB = new char[12];
+	sprintf (pointB, "%.0f", CurrentClosestNodeToDestination);
+	std::cout << "From : " << pointA << " ... to : " << pointB << '\n';
+	MyRouter.getpath(pointA,pointB, ipath);
+	int len = ipath.size();
+	std::cout << "ipath length : " << len << '\n';
+	SetPath(ipath);
+	delete[] pointA;
+	delete[] pointB;
+}
+
+// Setter : Traditional way to set the destination by the Id of the destination node the user wants to reach.
+// 			Calls the routing algorithm to calculates the shortest path.
+void Map::SetDestination(double idDestNode){
+
+	DestinationPosition_Lon = GetUserNodeById(idDestNode)->GetLongitude();
+	DestinationPosition_Lat = GetUserNodeById(idDestNode)->GetLatitude();
+	double CurrentClosestNode = GetClosestNode()->GetId();
+
 	Router MyRouter;
 
 	std::vector<char*> ipath;
-
-	//char pointA[7] = "-1630";
-	char pointA [10];
-	// Need to remove the decimals
+	char * pointA = new char[12];
 	sprintf (pointA, "%.0f", CurrentClosestNode);
 	std::cout << "Current closest node : " << pointA << '\n';
 
-	char pointB[10]; //= "-1858";
+	char * pointB = new char[12]; //= "-1858";
 	sprintf (pointB, "%.0f", idDestNode);
-
-
 	std::cout << "From : " << pointA << " ... to : " << pointB << '\n';
-	ipath = MyRouter.getpath(pointA,pointB);
+	//char * path = new char
+	MyRouter.getpath(pointA,pointB, ipath);
 	int len = ipath.size();
 	std::cout << "ipath length : " << len << '\n';
-
-	// End Zepeng Code //
-
 	SetPath(ipath);
+	delete[] pointA;
+	delete[] pointB;
 }
-/*
-vector<Node> SortCatsByAge(){
-vector< cat > cats_copy = cats;
-std::sort(cats_copy.begin(), cats_copy.end());
-return cats_copy;
-}
-*/
+
+// Returns an angle in randians from an angle in degrees.
 double Map::ToRadians(double degrees)
 {
 	double radians = degrees * LOCAL_PI / 180;
 	return radians;
 }
 
-void Map::WhichRoad(double lon, double lat){
+// From a set of coordinates(long, lat), return the closest road from it.
+// NB: Distance from a segment is different from a distance to straight line
+double Map::WhichRoadWithLatLon(double lon, double lat){
 	int Road_Nb = 0;
 	double Distance_Min = 5000;
 	for(vector<Road *>::iterator it = Road_Vec.begin(); it != Road_Vec.end(); ++it) {
@@ -462,22 +554,67 @@ void Map::WhichRoad(double lon, double lat){
 			Distance_Min = Temp_Distance;
 		}
 	}
-	CurrentRoad = Road_Nb;
+	return Road_Nb;
 }
 
-double Map::WhichRoadWithLatLon(){
-	WhichRoad(CurrentPosition_Lon,CurrentPosition_Lat);
+// 	Set and Return the Current Road the car is on;
+double Map::WhichRoad(){
+	CurrentRoad = WhichRoadWithLatLon(CurrentPosition_Lon,CurrentPosition_Lat);
 	std::cout << "Currently on road : " << CurrentRoad << '\n';
 	return CurrentRoad;
 }
 
+double Map::WhichRoadToDestination(){
+	double DestRoad = WhichRoadWithLatLon(DestinationPosition_Lon,DestinationPosition_Lat);
+	return DestRoad;
+}
 
-Map::Map(char * OsmFilePath){
-	rapidxml::file<> xmlFile(OsmFilePath);
+//	From a corrective angle computes the Steering Wheel position (Front) @glabalVar and
+//	returns the distance to drive with this position set.
+float Map::GetFrontAndTurnDistance(float angle){
+	if (angle < 0){     // RIGHT TURN
+		if (angle > -30){                 // angle btw -30 and 0
+			Front = 16;
+			return (-angle*2/30);
+		} else if (angle > -65){          // angle btw -65 and -30
+			Front = 20;
+			return (-angle*2/65);
+		} else {                          // angle above -65
+			Front = 24;
+			return ((-angle)-17)/37.4;
+		}
+	} else {            // LEFT TURN
+		if (angle < 20){
+			Front = 8;
+			return (angle/11);
+		} else if (angle < 40){
+			Front = 2;
+			return (angle/40);
+		} else {
+			Front = 0;
+			return (angle-24.4)/31.35;
+		}
+	}
+}
+
+/*
+Parse the xml file that contains the map. It is supposed to be entirely generic and should
+understand and work on any osm (OpenStreetMap) file.
+It create every usefull element to recreate the map (Nodes, Roads, Buildings).
+
+*/
+Map::Map(string OsmFilePath){
+	char * cOsmFilePath = new char[OsmFilePath.length() + 1];
+	strcpy(cOsmFilePath, OsmFilePath.c_str());
+	rapidxml::file<> xmlFile(cOsmFilePath);
+
+	cout << "\n" << OsmFilePath << "\n\n";
+
+	PathToDestination = new std::vector<Node *>();
+	Node_Vec = new std::vector<Node*>();
 
 	image = cv::Mat::zeros(cv::Size(LARGEUR_FENETRE, HAUTEUR_FENETRE), CV_8UC3);
 	imageClose = cv::Mat::zeros(cv::Size(LARGEUR_FENETRE, HAUTEUR_FENETRE), CV_8UC3);
-
 	Min_lon = 50;
 	Max_lon = 0;
 	Min_lat = 50;
@@ -487,14 +624,10 @@ Map::Map(char * OsmFilePath){
 	Delta_Lon = 0;
 	Delta_Lat = 0;
 	static int CurrentRoad = 0;
-
 	try {
 		xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
 		xml_node<> * root = doc.first_node();
-
-
-
 		double id = 0;
 		double lon = 0;
 		double lat = 0;
@@ -502,9 +635,7 @@ Map::Map(char * OsmFilePath){
 		cout.precision(12);
 		double id_way = 0;
 		xml_node<> * curr_node = root->first_node();
-
 		while(curr_node){
-
 			//Node
 			if(strcmp(curr_node->name(), "node")==0){
 				int user = 0;
@@ -538,23 +669,18 @@ Map::Map(char * OsmFilePath){
 					}
 					tag = tag->next_sibling();
 				}
-
 				//Create node if we have all the needed values
 				if (id != 0 && lon != 0 && lat != 0){
 					Node * myNode = new Node(id, lon, lat);
 					if (NotARoutingNode){
-						myNode->NotARoutingNode();
-						std::cout << "NotARoutingNode() : " << myNode->GetId() << '\n';
-						if (myNode->IsNotRoutingNode()){
-							std::cout << "Goood." << '\n';
-						}
+						myNode->IsNotRoutingNode();
 					}
 					if (user){
 						myNode->SetName(name);
 						User_Node.push_back(myNode);
 						//myNode->ToString();
 					} else {
-						Node_Vec.push_back(myNode);
+						Node_Vec->push_back(myNode);
 					}
 					if (lon < Min_lon){
 						Min_lon = lon;
@@ -566,18 +692,16 @@ Map::Map(char * OsmFilePath){
 					} else if (lat > Max_lat){
 						Max_lat = lat;
 					}
+					//delete myNode;
 				}
 			} // Node
-
 			//	Way
 			if(strcmp(curr_node->name(), "way")==0){
 				id_way = 0;
 				int building = 0;
 				int road = 0;
-				int NotARoad = 0;
 				string Name = "" ;
 				vector<Node> Vec_Way_Node;
-
 				if (strcmp(curr_node->first_attribute()->name(), "id") == 0){
 					id_way = atoi(curr_node->first_attribute()->value());
 					xml_node<> * curr_nd = curr_node->first_node();
@@ -613,10 +737,6 @@ Map::Map(char * OsmFilePath){
 									(strcmp(curr_nd->first_attribute()->next_attribute()->value(), "living_street") == 0)){
 										road = 1;
 									}
-								} else if (strcmp(curr_nd->first_attribute()->value(), "crossing") == 0){
-									if (strcmp(curr_nd->first_attribute()->next_attribute()->value(), "zebra") == 0){
-										NotARoad = 1;
-									}
 								}
 							}
 						}
@@ -624,16 +744,13 @@ Map::Map(char * OsmFilePath){
 					}
 					// Create the appropriate environment element if we have all the needed values
 					if (Vec_Way_Node.size() >= 2){
-
 						// Building ?
 						if (building == 1){
 							Building * myBuilding = new Building(id_way, Name, Vec_Way_Node);
 							Building_Vec.push_back(myBuilding);
+							//delete myBuilding;
 						}
 						// Road ?
-						if (NotARoad){
-							road = 0;
-						}
 						else if (building == 0 && road == 1){
 							BuildAllRoads(id_way, Vec_Way_Node);
 							//Road myRoad(id_way, Vec_Way_Node[0], Vec_Way_Node[Vec_Way_Node.size()-1]);
@@ -648,27 +765,24 @@ Map::Map(char * OsmFilePath){
 			}
 			//	Next sibling
 			curr_node = curr_node->next_sibling();
-
 		}
 		SetAlpha();
-		std::cout << "Number of Nodes : " << Node_Vec.size() << '\n';
+		std::cout << "Number of Nodes : " << Node_Vec->size() << '\n';
 		std::cout << "Number of Roads : " << Road_Vec.size() << '\n';
 		std::cout << "Number of User Nodes : " << User_Node.size() << '\n';
-
-
 	}
 	catch (const runtime_error& error)
 	{
 		cout << "Problem when opening the map file : " << '\n';
 	}
+
+	delete[] cOsmFilePath;
 }
 
-
-
-
-
-
-
+Map::~Map(){
+	delete PathToDestination;
+	delete Node_Vec;
+}
 
 /********************************/
 /*								*/
@@ -676,7 +790,7 @@ Map::Map(char * OsmFilePath){
 /*								*/
 /********************************/
 
-
+//	To string method to display a node used mainly for debugging purposes.
 void Node::ToString(){
 	if (user){
 		cout << "Node called : " << Name << "    with id : " << id << " longitude : " << longitude << " and latitude : " << latitude << "\n";
@@ -684,20 +798,25 @@ void Node::ToString(){
 		cout << "My node with id : " << id << " longitude : " << longitude << " and latitude : " << latitude << "\n";
 	}
 }
+
+//	Node constructor.
 Node::Node(){
 	id = 0;
 }
 
+// Node constructor with a specified id, and position.
 Node::Node(double Node_Id, float lon, float lat){
 	id = Node_Id;
 	longitude = lon;
 	latitude = lat;
 }
 
+// Not used.
 bool Node::operator< (const Node &other) {
 	return id < other.id;
 }
 
+// 	@Setter : in case the Node is a destination, it needs a Name to be identified by the user.
 void Node::SetName(string NAME){
 	Name = NAME;
 	user = 1;
@@ -725,6 +844,14 @@ void Node::DisplayAsPathNode(int close, cv::Mat imageToWriteOn){
 	}
 }
 
+void Node::DisplayAsDestinationNode(int close, cv::Mat imageToWriteOn){
+	if (close){
+		cv::circle(imageToWriteOn, cv::Point(Map::GetCloseDisplayX(longitude), Map::GetCloseDisplayY(latitude)),  5, cv::Scalar(252, 189, 47, 255), -1, 8, 0);
+	} else {
+		cv::circle(imageToWriteOn, cv::Point(Map::GetDisplayX(longitude), Map::GetDisplayY(latitude)),  5, cv::Scalar(252, 189, 47, 255), -1, 8, 0);
+	}
+}
+
 float Node::GetLatitude(){
 	return latitude;
 }
@@ -746,13 +873,6 @@ int Node::IsNotRoutingNode(){
 string Node::GetName(){
 	return Name;
 }
-
-
-
-
-
-
-
 
 /********************************/
 /*								*/
@@ -790,7 +910,6 @@ void Road::SetEndNode(Node e){
 
 void Road::SetVecRoadNodes(std::vector<Node> VEC){
 	Road_Nodes = VEC;
-	std::cout << "Size of Road nodes vec " << Road_Nodes.size() << '\n';
 }
 
 double Road::DistanceToCenter(double lon, double lat){

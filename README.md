@@ -1,30 +1,45 @@
 # Parser and Router
 
+This is a piece of code embedded in a bigger project, my final year project at INSA toulouse.
+The project was to create an autonomous car. This map is used later on for the car's guidance system.
+
 ## Installing
 
 You need to install OpenCV on your machine.
 
-## How to interface with the code
+## Compiling
 
-First Initialize the Map class
-
+Execute
 ```
-rapidxml::file<> xmlFile("heavy.osm");
-Map MyMap(xmlFile);
+make
 ```
+in the terminal in the folder containing the Makefile.
 
-Then retrieve the User Nodes. This is where the users can be guided to
+## What does the code do
 
-```
-std::vector<tuple<string, double>> MyVectorOfUserDestination = MyMap.GetTupleOfDestinations();
-```
+The input is a xml file containing OpenStreetMap data. First, it parses the file to create an instance of each underlying element (Node, Road, Building) that would later on be useful for the car's guidance system.
+It then renders these element so we can observe what is going on.
 
-The car should now be placed on a node (or as close as possible) in order to start driving.
-Our car can therefore start from anywhere on the map. This is done by asking the MyMap instance.
+![ScreenShot](Images/insa.tiff)
 
-```
-double CurrentClosestNode = MyMap.GetClosestNode()->GetId();
-```
+On this screenshot, you can see the roads and buildings of my campus in Toulouse, France. You can compare it to the view from google maps.
 
-In order to go somewhere we need to tell the car where about. therefore you need to
-send the node id corresponding to the destination from the vector of tuples.
+![ScreenShot](Images/insa-gmaps.tiff)
+
+Then, there is a zooming functionality :
+
+![ScreenShot](Images/zoom.tiff)
+
+The blue road is the road that is the closest to the current point (in red). It is therefore the road the algorithm assumes the car is on. The way each roads are computed is by a starting point and an ending point having as x and y coordinates the longitude and latitude.
+
+The second functionality that this algorithm provides is the routing from the current position to a given destination.
+
+![ScreenShot](Images/router.tiff)
+
+Lastly, here is another output with the city center of Toulouse. The parsing algorithm is generic and can take any piece of land as long as it is inputed as OpenStreetMap data (the .osm files have in fact an xml format)
+
+![ScreenShot](Images/capitole.tiff)
+
+and the google version:
+
+![ScreenShot](Images/capitole-gmaps.tiff)

@@ -62,8 +62,8 @@ class DictHandler(sax.handler.ContentHandler):
 		if self.lastNode:
 			#print "found a old node creating connection"
 			connection(self.id,self.lastNode,nowNode)
-		else:
-			print "no old node saved inna here"
+		#else:
+			#print "no old node saved inna here"
 		self.lastNode = nowNode
 	elif (self.aktiv == "way" and name == "tag"):
 		#print "tag found"
@@ -82,7 +82,7 @@ class DictHandler(sax.handler.ContentHandler):
             #self.ergebnis[self.schluessel] = self.typ(self.wert)
             self.aktiv = None
 	    if self.saveMe:
-	    	print "Connections should be saved! "
+	    	#print "Connections should be saved! "
 		#print "<way id=" + self.id + " highway=" + self.highway + " name=" + self.streetName.encode('ascii',"ignore") + " </way>"
 		#saving connecitons
 		for i in self.nodes:
@@ -110,8 +110,9 @@ class connection():
 		node2.addConnection(self)
 		#print " Connection between: " + node1.id + " and " + node2.id + " created"
 	def printConnection(self):
+
 		print "Saved Connection between: " + self.node1.id + " and " + self.node2.id + "! "
-		print "<printing connection done>"
+		#print "<printing connection done>"
 	def getOtherNode(self,node):
 		if (node == self.node1):
 		  return self.node2
@@ -147,7 +148,7 @@ class node():
 		return len(self.connections)
 	def printConnections(self):
 		#print self.id + " has " + str(len(self.connections)) + " connecitons they are:"
-                print "temp "
+                print "temp"
 		#for i in self.connections:
 			#print str(i)
 			#print i.printConnection()
@@ -320,11 +321,11 @@ def startRouting(db,startID,endID):
     mypath = list()
     print "I came to " + nowNode.id
     while (nowNode.cameFrom != None):
-      print " via " + nowNode.cameFrom.id + "\t Link: http://www.openstreetmap.org/node/"+nowNode.cameFrom.id
+      #print " via " + nowNode.cameFrom.id + "\t Link: http://www.openstreetmap.org/node/"+nowNode.cameFrom.id
       nowNode = nowNode.cameFrom
       mypath.append(nowNode.id)
     for i in mypath:
-        print "back mypath to  cpp_call"+i
+        print "back mypath to cpp_call"+i
     return mypath
 
 def cpp_call_test():

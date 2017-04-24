@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <tuple>
+#include <time.h>
 #include "parserV1.hpp"
 //#include "router.hpp"
 
@@ -16,75 +17,29 @@
 
 int main(){
 
-    //rapidxml::file<> xmlFile("heavy.osm");
-    Map MyMap("heavy.osm");
-    //Map MyMap("capitole.xml");
-    std::vector<tuple<string, double>> MyVectorOfUserDestination = MyMap.GetTupleOfDestinations();
 
-    double ExamplePointLat = 43.570521;
-    double ExamplePointLon =   1.467380;
+    clock_t tStart = clock();
+    Map * MyMap = new Map("heavy.osm");
+    std::vector<tuple<string, double>> MyVectorOfUserDestination = MyMap->GetTupleOfDestinations();
+    double ExamplePointLat = 43.569571;
+    double ExamplePointLon = 1.467061;
+    MyMap->SetPosition(ExamplePointLon,ExamplePointLat);
+    printf("Time taken to parse: %.4fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    MyMap->Display(0);
+    printf("Time taken to parse and render: %.4fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    MyMap->Display(1);
+    MyMap->SetDestination(-8);
+    MyMap->Display(0);
 
-    //double ExampleDestLat = 43.5708618;
-    //double ExampleDestLon = 1.4670463;
-    MyMap.SetPosition(ExamplePointLon,ExamplePointLat);
-    //MyMap.SetDestination(-8);
-    //MyMap.WhichRoadWithLatLon();
+    delete MyMap;
 
-    MyMap.Display(0);
-    MyMap.Display(1);
-
-    Map MySecondMap("capitole.xml");
+    tStart = clock();
+    Map MySecondMap("capitole.osm");
+    printf("Time taken to parse: %.4fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    double ExamplePoint2Lat = 43.604409;
+    double ExamplePoint2Lon =  1.446727;
+    MySecondMap.SetPosition(ExamplePoint2Lon,ExamplePoint2Lat);
     MySecondMap.Display(0);
-/*
 
-    MyMap.SetPosition(1.466078, 43.570376);
-    std::cout << "GetCorrectiveHeading(3) : " << MyMap.GetCorrectiveHeading(3.0) << '\n';
-
-    MyMap.Display(1);
-
-	MyMap.SetPosition(1.466117,43.570386);
-std::cout << "GetCorrectiveHeading(3) : " << MyMap.GetCorrectiveHeading(3.0) << '\n';
-
-	MyMap.Display(1);
-
-
-    MyMap.CreateAll(0, MyMap.image);
-    MyMap.DisplayMyPosition();
-    MyMap.DisplayImage(0);
-
-    MyMap.CreateAll(1, MyMap.imageClose);
-    MyMap.DisplayCloseMyPosition();
-    MyMap.DisplayImage(1);
-*/
-/*
-    // new
-
-    double CurrentClosestNode = MyMap.GetClosestNode()->GetId();
-
-    // Zepeng Code
-
-    Router MyRouter;
-
-    std::vector<char*> ipath;
-
-    //char pointA[7] = "-1630";
-    char pointA [10];
-    // Need to remove the decimals
-    sprintf (pointA, "%.0f", CurrentClosestNode);
-    std::cout << "Current closest node : " << pointA << '\n';
-    char pointB[7] = "-1858";
-
-    std::cout << "From : " << pointA << " ... to : " << pointB << '\n';
-    ipath = MyRouter.getpath(pointA,pointB);
-    int len = ipath.size();
-    std::cout << "ipath length : " << len << '\n';
-
-    // End Zepeng Code //
-
-    MyMap.SetPath(ipath);
-    std::cout << "The cap to follow : " << MyMap.CapAlgorithm() << '\n';
-    MyMap.DisplayPath(0, MyMap.image);
-    MyMap.DisplayImage(0);
-*/
     return 1;
 }
